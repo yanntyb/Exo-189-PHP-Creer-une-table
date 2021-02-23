@@ -53,15 +53,44 @@
  *   - prix
  *   - description_courte
  *   - description_longue
- *
- * Si vous estimez avoir fais le bon choix des types dans l'exo 1, alors vous pouvez les réutiliser.
- *
- * Gardez ce code en local et envoyez moi le lien de votre repo Github pour que je puisse vérifier votre requête...
  */
 
-// TODO Votre code ici.
 
 try {
-    ...
+    $db = "table_test_php";
+    $maConnexion = new PDO("mysql:host=localhost;dbname=$db","root","");
+    $maConnexion->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+
+    $request1 = "
+        CREATE TABLE utilisateur (
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            nom VARCHAR(30) NOT NULL,
+            prenom VARCHAR(30) NOT NULL,
+            email VARCHAR(100) NOT NULL,
+            password VARCHAR(100) NOT NULL,
+            adresse VARCHAR(50) NOT NULL,
+            code_postal SMALLINT UNSIGNED NOT NULL,
+            pays VARCHAR(40) NOT NULL,
+            date_join DATETIME DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE(email)
+        )
+    ";
+
+    $request2 = "
+        CREATE TABLE produit (
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            titre VARCHAR(50) NOT NULL,
+            prix FLOAT NOT NULL,
+            description_courte VARCHAR(255) NOT NULL,
+            description_longue TEXT NOT NULL
+        )
+    ";
+
+    $maConnexion->exec($request1);
+    $maConnexion->exec($request2);
+
+    echo "La base de données intro_sql a bien été créée.";
 }
-catch...
+catch (PDOException $exception) {
+    echo $exception->getMessage();
+}
